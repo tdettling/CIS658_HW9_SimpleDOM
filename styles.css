@@ -1,0 +1,12 @@
+body {
+    background-color: rgb(210, 228, 234);
+  }
+
+  /* https://www.w3schools.com/css/css3_borders.asp */
+.buttonBorder {
+    border-radius: 25px;
+    border: 10px solid #f44a20;
+    padding: 20px;
+    width: 200px;
+    height: 150px;
+    }

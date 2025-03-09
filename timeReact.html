@@ -1,0 +1,132 @@
+<!-- 
+L Dettling
+CIS 658
+DOM Homework
+
+I made a game that when users hit the start button, they wait for the blue button to turn red, then hit it. Then the time it took between the button turning red and the user hitting it appears with a message, and they can play again after. 
+
+I have super limited knowladge on timers and buttons, so lots of sources int his one. 
+    https://www.w3schools.com/tags/tag_button.asp
+    https://www.w3schools.com/jsref/met_element_addeventlistener.asp
+    https://www.w3schools.com/jsref/prop_style_color.asp
+    https://www.w3schools.com/jsref/met_win_settimeout.asp
+    https://www.geeksforgeeks.org/javascript-performance-now-method/
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="styles.css">
+<title>Page Title</title>
+
+</head>
+<body>
+
+<h1>Time Your Reaction</h1>
+<p> Are you super fast???????????????????????????</p>
+
+<!-- Class notes
+Notice the “number” of the noun.
+getElementById is singular. It returns a single object.
+getElementsByClassName is plural. It returns an HTMLCollection of objects.
+
+However You can use Array.from to create an Array based on an HTMLCollection
+Be aware: an HTMLCollection is a “live” list: It will change as the DOM is updated, whereas an Array is a “static” list: It will not be updated.
+
+buttons3[i].addEventListener('click', () => {
+            let place = document.getElementById('group3-name');
+
+            // buttons3[i] refers to the correct button because the scope of variable i
+            // is limited to the body of the loop.  Thus, the current value of i is captured
+            // by the closure of this lambda.
+            console.log(`i is now ${i}`);
+            place.innerText = buttons3[i].innerText;
+        });
+-->
+
+
+<h2> Timer </h2>
+ <!-- Button to press -->
+<!-- https://www.w3schools.com/tags/tag_button.asp -->
+<button id="start">Start</button>
+<h2 > Button to press here!</h2>
+<button id="click-me" disabled>Click Me</button>
+
+<!-- Time displayed -->
+<p id="result"> No time yet! </p>
+
+
+<!-- Putting DOM stuff at the end for proper updating -->
+ <script>
+    // Need button IDs from DOM - Class notes
+    const start_button = document.getElementById("start");
+    const click_me_button = document.getElementById("click-me");
+    const result = document.getElementById("result");
+
+    // I need the button to be ready to be pressed in 3-12 seconds, after the start button goes
+    const time_spacer = Math.random() * (12000 - 3000) + 3000; // 3-12 seconds
+    let timer;
+    let start_time;
+
+    // stuff needs to happen when you click the button
+    // https://www.w3schools.com/jsref/met_element_addeventlistener.asp
+
+    //when start button is pressed by user
+    start_button.addEventListener("click", function() {
+        //https://www.w3schools.com/jsref/prop_style_color.asp
+        click_me_button.style.color = "white";
+        click_me_button.style.backgroundColor = "blue";
+        click_me_button.disabled = true;
+        click_me_button.textContent = "NOT YET"
+        result.textContent = "Don't click yet";    
+
+        //as soon as this button is hit, we need to
+        // start the time spacer so that the window where 
+        // the button can be pressed is within 3-12ish seconds
+        // I think window timer will work
+        //https://www.w3schools.com/jsref/met_win_settimeout.asp
+        //performance.now() - https://www.geeksforgeeks.org/javascript-performance-now-method/
+        setTimeout(start_timer, time_spacer)
+
+    });
+
+    
+
+    function start_timer() {
+        click_me_button.style.color = "white";
+        click_me_button.style.backgroundColor = "red";
+        click_me_button.disabled = false;
+        click_me_button.textContent = "CLICK ME"
+
+        start_time = performance.now();
+
+        start_button.disabled = true;
+    }
+
+    click_me_button.addEventListener("click", function(){
+        //enabeled - timer is going
+        slow_scale = ["you are very slow 😒 slow pokey time is: ", "wow, that was great! time is: "]
+
+        if (!click_me_button.disabled){
+            click_me_button.style.color = "white"
+            click_me_button.style.backgroundColor = "green";
+            click_me_button.disabled = true;
+            start_button.disabled = false
+
+            const react_time = (performance.now() - start_time)
+            // button was pressed, get timer
+            if (react_time < 500) {
+                result.textContent = slow_scale[1] + react_time + " ms";
+            } else {
+                result.textContent = slow_scale[0] + react_time + " ms";
+            }
+        }
+
+    });
+
+
+
+ </script>
+
+</body>
+</html>
